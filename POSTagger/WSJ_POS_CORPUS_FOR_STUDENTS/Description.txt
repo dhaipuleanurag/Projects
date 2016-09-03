@@ -1,0 +1,11 @@
+Implemented bigram model - Results: 94.4%. Following are the modifications I tried. 
+1. Capitalization: The idea here is to maintain the count of different parts of speech with capital and non capital letters. Then multiplying this probability to the word probability. This did not yield performance improvements. Without this change, the results were close to 95% right and after changes it brought down to 90.4%.
+2. Word ending: In this case, I maintained a list of words that could possibly be endings for common tags like 'ing', 'ed'. A dictionary was used for the same. Every element in viterbi table is now the probability in case of bigram model multiplied by the the probability that a word ends with a particular tag. This resulted in close to 92% accuracy. Code for this is also sent.
+3. Last thing I did was to individually consider a common ending and corresponding tag. Once found, increase its word probability by some amount. This resulted in probability of 95.1%
+Something like this:
+	if(word.isupper() and word[-1] == 's' and tag == 'NNPS'):
+		value = value + 0.0001
+	if(word.isupper() and tag == 'NNP'):
+		value = value + 0.0001
+	if(word[-1] == 's' and (tag == 'NNS' or tag == 'VBZ')):
+		value = value + 0.00001
